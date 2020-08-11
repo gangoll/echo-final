@@ -1,3 +1,5 @@
+var os = require("os");
+var hostname = os.hostname();
 
 const express = require('express')
 const log4js = require('log4js')
@@ -9,7 +11,7 @@ const logger = log4js.getLogger()
 logger.level = config.loglevel
 let db
 
-logger.info("Starting echo app!")
+logger.info('Host is : $hostname , starting echo app... ')
 logger.debug("Configuration: ", config)
 
 if (!config.persist) {
