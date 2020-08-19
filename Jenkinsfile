@@ -83,36 +83,36 @@ pipeline {
     //     }
     // }
 
-    // post {
-    //     always{
-    //         echo 'Removing testing containers:'
-    //         sh "docker rm -f nginx_test || true" //app container
-    //         sh "docker rm -f ted_test || true" 
-    //     }
+    post {
+        always{
+            // echo 'Removing testing containers:'
+            // sh "docker rm -f nginx_test || true" //app container
+            // sh "docker rm -f ted_test || true" 
+        }
 
-    //     success{     
-    //         script{           
+        success{     
+            script{           
                
                 
                    
-    //                  mail to: "gangoll1992@gmail.com"
-    //                  subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) Successfuly",
-    //                  body: "APP building SUCCESSFUL!, see console output at ${env.BUILD_URL} to view the results"
+                    //  mail to: "gangoll1992@gmail.com"
+                    //  subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) Successfuly",
+                    //  body: "APP building SUCCESSFUL!, see console output at ${env.BUILD_URL} to view the results"
                 
-    //         }                
-    //     }
+            }                
+        }
         
 
-    //     failure{  
-    //         script{   
+        failure{  
+            script{   
 
                 
-    //                        mail to: "gangoll1992@gmail.com"
-    //                        subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) FAILED",
-    //                        body: "APP building FAIL!, Check console output at ${env.BUILD_URL} to view the results"
+                        //    mail to: "gangoll1992@gmail.com"
+                        //    subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) FAILED",
+                        //    body: "APP building FAIL!, Check console output at ${env.BUILD_URL} to view the results"
                 
                 
-    //         }
-    //     }
-    // } 
+            }
+        }
+    } 
 }
