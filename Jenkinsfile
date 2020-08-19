@@ -9,9 +9,9 @@ pipeline {
         stage('pull') {
             steps {
                 sh 'mkdir master dev staging'
-                sh 'git pull || git clone  https://github.com/gangoll/echo-final ./master'
-                sh 'git pull || git clone  https://github.com/gangoll/echo-final ./dev'
-                sh 'git pull || git clone  https://github.com/gangoll/echo-final ./staging'
+                sh 'git clone  https://github.com/gangoll/echo-final ./master'
+                sh 'git clone  https://github.com/gangoll/echo-final ./dev'
+                sh 'git clone  https://github.com/gangoll/echo-final ./staging'
                 script {
                     GIT_COMMIT_HASH=sh (script: "git log -1 | tail -1", returnStdout: true).trim()
                    
