@@ -50,9 +50,9 @@ pipeline {
             
             steps { 
                  
-                 docker.withRegistry( '', registryCredential ){
+                 
                     script{             //if script returns 1 the job will fail!!
-                         
+                         docker.withRegistry( '', registryCredential ){
                       if (BRANCH_NAME =~ /^(master)/){
                            sh "docker tag 1.0.${env.JENKINS_BUILD_NUMBER} gangoll/1.0.${env.JENKINS_BUILD_NUMBER} && docker push gangoll/1.0.${env.JENKINS_BUILD_NUMBER}"
                       }
