@@ -1,10 +1,11 @@
 pipeline {
     agent any
-//     tools {
-//   terraform 'terraform'
-          
+          environment {
+    registry = "gangoll/test"
+    registryCredential = 'dockerhub'
+}
 
-//     }
+
     stages {
         stage('pull') {
             steps {
@@ -45,10 +46,12 @@ pipeline {
             steps { 
                  dir('app'){
                     script{             //if script returns 1 the job will fail!!
-                        
+                         
+          
+                        docker.withRegistry( '', registryCredential ){
                         sh "docker tag dev-${GIT_COMMIT_HASH} gangoll/dev-${GIT_COMMIT_HASH} && docker push gangoll/dev-${GIT_COMMIT_HASH}"
                         sh "docker tag 1.0.${env.JENKINS_BUILD_NUMBER} gangoll/1.0.${env.JENKINS_BUILD_NUMBER} && docker push gangoll/1.0.${env.JENKINS_BUILD_NUMBER}"
-                        sh "docker tag staging-${GIT_COMMIT_HASH} gangoll/staging-${GIT_COMMIT_HASH} && docker push gangoll/staging-${GIT_COMMIT_HASH}"
+                        sh "docker tag staging-${GIT_COMMIT_HASH} gangoll/staging-${GIT_COMMIT_HASH} && docker push gangoll/staging-${GIT_COMMIT_HASH}"}
                         
                      }
                  }
