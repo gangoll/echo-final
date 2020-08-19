@@ -39,6 +39,7 @@ pipeline {
                             sh "docker build -t 'staging-${GIT_COMMIT_HASH}'  ." 
                         }
             
+            
                     }
                 }
             }
