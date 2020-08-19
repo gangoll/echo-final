@@ -13,7 +13,7 @@ pipeline {
                 sh 'git pull  || git clone  https://github.com/gangoll/echo-final dev'
                 sh 'git pull  || git clone  https://github.com/gangoll/echo-final staging'
                 script {
-                    commit=sh (script: "git log -1 | tail -1", returnStdout: true).trim()
+                    GIT_COMMIT_HASH=sh (script: "git log -1 | tail -1", returnStdout: true).trim()
                    
                 }
                 echo "${commit}"
