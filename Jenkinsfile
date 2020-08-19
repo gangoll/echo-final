@@ -1,10 +1,10 @@
 pipeline {
     agent any
-    tools {
-  terraform 'terraform'
+//     tools {
+//   terraform 'terraform'
           
 
-    }
+//     }
     stages {
         stage('pull') {
             steps {
