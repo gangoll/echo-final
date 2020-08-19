@@ -16,7 +16,7 @@ pipeline {
                     GIT_COMMIT_HASH=sh (script: "git log -1 | tail -1", returnStdout: true).trim()
                    
                 }
-                echo "${commit}"
+                echo "${GIT_COMMIT_HASH}"
                 
             }
         }          
