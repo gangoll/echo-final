@@ -50,6 +50,7 @@ pipeline {
             
             steps { 
                  
+                 docker.withRegistry( '', registryCredential ){
                     script{             //if script returns 1 the job will fail!!
                          
                       if (BRANCH_NAME =~ /^(master)/){
@@ -64,7 +65,7 @@ pipeline {
                         
                      }
                  
-             }
+             }}
         }}
         
         // stage('deply')
