@@ -28,16 +28,18 @@ pipeline {
         stage('build') { // new container to test
             steps {
                 script{
-                    
+                        if (BRANCH_NAME =~ /^(dev)/){
                         dir('dev'){    
                             sh "docker build -t dev-${GIT_COMMIT_HASH} ." 
-                        }
+                        }}
+                        if (BRANCH_NAME =~ /^(master)/){
                         dir('master'){    
                             sh "docker build -t 1.0.${env.JENKINS_BUILD_NUMBER}  ." 
-                        }
+                        }}
+                        if (BRANCH_NAME =~ /^(staging)/){
                         dir('staging'){    
                             sh "docker build -t 'staging-${GIT_COMMIT_HASH}'  ." 
-                        }
+                        }}
             
 
                     }
