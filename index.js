@@ -11,7 +11,7 @@ const logger = log4js.getLogger()
 logger.level = config.loglevel
 let db
 
-logger.info('Host is : $hostname , starting echo app... ')
+logger.info(`host name: ${os.hostname} , echo app starting! <3 <3`)
 logger.debug("Configuration: ", config)
 
 if (!config.persist) {
