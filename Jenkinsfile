@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('pull') {
             steps {
-                // sh 'mkdir master dev staging'
+                sh 'mkdir master dev staging'
                 sh 'git pull  || git clone  https://github.com/gangoll/echo-final ./master'
                 sh 'git pull  || git clone  https://github.com/gangoll/echo-final ./dev'
                 sh 'git pull  || git clone  https://github.com/gangoll/echo-final ./staging'
