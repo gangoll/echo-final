@@ -39,25 +39,29 @@ pipeline {
                             sh "docker build -t 'staging-${GIT_COMMIT_HASH}'  ." 
                         }
             
-            
+
                     }
                 }
             }
         
-        stage('test') {
+        stage('push to github') {
             
             steps { 
-                 dir('app'){
+                 
                     script{             //if script returns 1 the job will fail!!
                          
-          
+                      if (BRANCH_NAME =~ /^(master)/){
+                           sh "docker tag 1.0.${env.JENKINS_BUILD_NUMBER} gangoll/1.0.${env.JENKINS_BUILD_NUMBER} && docker push gangoll/1.0.${env.JENKINS_BUILD_NUMBER}"
+                      }
+                       if (BRANCH_NAME =~ /^(dev)/){
                         docker.withRegistry( '', registryCredential ){
-                        sh "docker tag dev-${GIT_COMMIT_HASH} gangoll/dev-${GIT_COMMIT_HASH} && docker push gangoll/dev-${GIT_COMMIT_HASH}"
-                        sh "docker tag 1.0.${env.JENKINS_BUILD_NUMBER} gangoll/1.0.${env.JENKINS_BUILD_NUMBER} && docker push gangoll/1.0.${env.JENKINS_BUILD_NUMBER}"
+                        sh "docker tag dev-${GIT_COMMIT_HASH} gangoll/dev-${GIT_COMMIT_HASH} && docker push gangoll/dev-${GIT_COMMIT_HASH}"}
+                       
+                        if (BRANCH_NAME =~ /^(staging)/){
                         sh "docker tag staging-${GIT_COMMIT_HASH} gangoll/staging-${GIT_COMMIT_HASH} && docker push gangoll/staging-${GIT_COMMIT_HASH}"}
                         
                      }
-                 }
+                 
              }
         }
         
