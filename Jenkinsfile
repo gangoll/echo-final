@@ -4,6 +4,9 @@ pipeline {
     registry = "gangoll/test"
     registryCredential = 'dockerhub'
 }
+    triggers {
+        githubPush()
+    }
 
 
     stages {
@@ -25,7 +28,6 @@ pipeline {
         stage('build') { // new container to test
             steps {
                 script{
-                    sh 'docker network create testing || true'
                     
                         dir('dev'){    
                             sh "docker build -t dev-${GIT_COMMIT_HASH} ." 
