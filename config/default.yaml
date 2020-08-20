@@ -3,3 +3,4 @@ loglevel: info
 persist: true
 mongodburl: mongodb://myusername:mypassword@mongo1-mongodb-replicaset-0.mongo1-mongodb-replicaset,mongo1-mongodb-replicaset-1.mongo1-mongodb-replicaset,mongo1-mongodb-replicaset-2.mongo1-mongodb-replicaset:27017/echo?authSource=admin
 dbname: echo
+
