@@ -14,11 +14,15 @@ pipeline {
             steps {
                 script{
                 if (BRANCH_NAME =~ /^(master)/){
-                sh 'git pull --single-branch --branch master  https://github.com/gangoll/echo-final ./master || git clone --single-branch --branch master  https://github.com/gangoll/echo-final ./master'}
+                    dir('master'){  
+                sh 'git pull  || git clone --single-branch --branch master  https://github.com/gangoll/echo-final'}}
+
                 if (BRANCH_NAME =~ /^(dev)/){
-                sh 'git pull --single-branch --branch dev https://github.com/gangoll/echo-final ./dev || git clone --single-branch --branch dev https://github.com/gangoll/echo-final ./dev'}
+                    dir('master'){  
+                sh 'git pull || git clone --single-branch --branch dev https://github.com/gangoll/echo-final'}}
                 if (BRANCH_NAME =~ /^(staging)/){
-                sh 'git pull git clone --single-branch --branch staging  https://github.com/gangoll/echo-final ./staging || git clone --single-branch --branch staging  https://github.com/gangoll/echo-final ./staging'}
+                    dir('master'){  
+                sh 'git pull || git clone --single-branch --branch staging  https://github.com/gangoll/echo-final'}}
             }
                 script {
                     GIT_COMMIT_HASH=sh (script: "git log -1 | tail -1", returnStdout: true).trim()
