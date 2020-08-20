@@ -1,60 +1,74 @@
 pipeline {
     agent any
-    tools {
-  terraform 'terraform'
-          
-
+          environment {
+    registry = "gangoll/test"
+    registryCredential = 'dockerhub'
+}
+    triggers {
+        githubPush()
     }
+
+
     stages {
         stage('pull') {
             steps {
-                
-                sh 'git pull  || git clone  https://github.com/gangoll/echo-final master'
-                sh 'git pull  || git clone  https://github.com/gangoll/echo-final dev'
-                sh 'git pull  || git clone  https://github.com/gangoll/echo-final staging'
+                if (BRANCH_NAME =~ /^(master)/){
+                sh 'git pull || git clone --single-branch --branch master  https://github.com/gangoll/echo-final ./master'}
+                if (BRANCH_NAME =~ /^(dev)/){
+                sh 'git pull || git clone --single-branch --branch dev https://github.com/gangoll/echo-final ./dev'}
+                if (BRANCH_NAME =~ /^(staging)/){
+                sh 'git pull || git clone --single-branch --branch staging  https://github.com/gangoll/echo-final ./staging'}
                 script {
-                    commit=sh (script: "git log -1 | tail -1", returnStdout: true).trim()
+                    GIT_COMMIT_HASH=sh (script: "git log -1 | tail -1", returnStdout: true).trim()
                    
                 }
-                echo "${commit}"
+                echo "${GIT_COMMIT_HASH}"
                 
             }
         }          
       
- 
-
         stage('build') { // new container to test
             steps {
                 script{
-                    sh 'docker network create testing || true'
-                    
+                        if (BRANCH_NAME =~ /^(dev)/){
                         dir('dev'){    
                             sh "docker build -t dev-${GIT_COMMIT_HASH} ." 
-                        }
+                        }}
+                        if (BRANCH_NAME =~ /^(master)/){
                         dir('master'){    
-                            sh "docker build -t 1.0.${JENKINS_BUILD_NUMBER}  ." 
-                        }
+                            sh "docker build -t 1.0.${env.JENKINS_BUILD_NUMBER}  ." 
+                        }}
+                        if (BRANCH_NAME =~ /^(staging)/){
                         dir('staging'){    
                             sh "docker build -t 'staging-${GIT_COMMIT_HASH}'  ." 
-                        }
+                        }}
             
+
                     }
                 }
             }
         
-        // stage('test') {
+        stage('push to github') {
             
-        //     steps { 
-        //          dir('app'){
-        //             script{             //if script returns 1 the job will fail!!
-        //                 echo "testing..."
-        //                 sh 'chmod +x test.sh || true'
-        //                 RESULT=sh (script: './test.sh', returnStdout: true).trim()
-        //                 echo "Result: ${RESULT}"
-        //              }
-        //          }
-        //      }
-        // }
+            steps { 
+                 
+                 
+                    script{             //if script returns 1 the job will fail!!
+                         docker.withRegistry( '', registryCredential ){
+                      if (BRANCH_NAME =~ /^(master)/){
+                           sh "docker tag 1.0.${env.JENKINS_BUILD_NUMBER} gangoll/1.0.${env.JENKINS_BUILD_NUMBER} && docker push gangoll/1.0.${env.JENKINS_BUILD_NUMBER}"
+                      }
+                       if (BRANCH_NAME =~ /^(dev)/){
+                        docker.withRegistry( '', registryCredential ){
+                        sh "docker tag dev-${GIT_COMMIT_HASH} gangoll/dev-${GIT_COMMIT_HASH} && docker push gangoll/dev-${GIT_COMMIT_HASH}"}
+                       
+                        if (BRANCH_NAME =~ /^(staging)/){
+                        sh "docker tag staging-${GIT_COMMIT_HASH} gangoll/staging-${GIT_COMMIT_HASH} && docker push gangoll/staging-${GIT_COMMIT_HASH}"}
+                        
+                     }
+                 
+             }}
+        }}
         
         // stage('deply')
         // {
@@ -81,38 +95,38 @@ pipeline {
     //                      }
     //     }
     //     }
-    // }
+    }
 
-    post {
-        always{
-            echo 'Removing testing containers:'
-            sh "docker rm -f nginx_test || true" //app container
-            sh "docker rm -f ted_test || true" 
-        }
+    // post {
+    //     always{
+    //         // echo 'Removing testing containers:'
+    //         // sh "docker rm -f nginx_test || true" //app container
+    //         // sh "docker rm -f ted_test || true" 
+    //     }
 
-        success{     
-            script{           
+    //     success{     
+    //         script{           
                
                 
-                     #mail $team good worked
-                     mail to: "gangoll1992@gmail.com"
-                     subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) Successfuly",
-                     body: "APP building SUCCESSFUL!, see console output at ${env.BUILD_URL} to view the results"
+                   
+    //                 //  mail to: "gangoll1992@gmail.com"
+    //                 //  subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) Successfuly",
+    //                 //  body: "APP building SUCCESSFUL!, see console output at ${env.BUILD_URL} to view the results"
                 
-            }                
-        }
+    //         }                
+    //     }
         
 
-        failure{  
-            script{   
+    //     failure{  
+    //         script{   
 
                 
-                           mail to: "gangoll1992@gmail.com"
-                           subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) FAILED",
-                           body: "APP building FAIL!, Check console output at ${env.BUILD_URL} to view the results"
+    //                     //    mail to: "gangoll1992@gmail.com"
+    //                     //    subject: "${env.JOB_NAME} - (${env.BUILD_NUMBER}) FAILED",
+    //                     //    body: "APP building FAIL!, Check console output at ${env.BUILD_URL} to view the results"
                 
                 
-            }
-        }
-    } 
+    //         }
+    //     }
+    // } 
 }
