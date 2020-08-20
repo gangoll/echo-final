@@ -1,6 +1,10 @@
 port: 3000
 loglevel: info
 persist: true
+<<<<<<< HEAD
 mongodburl: ""
+=======
+mongodburl: ""
+>>>>>>> f9e1fb50f70104cfd2b04bc733420e104ceb0e4d
 dbname: echo
 
