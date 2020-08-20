@@ -66,7 +66,7 @@ pipeline {
                       }
                        if (BRANCH_NAME =~ /^(dev)/){
                         docker.withRegistry( '', registryCredential ){
-                        sh "docker tag dev-${env.GIT_COMMIT.} gangoll/dev-${env.GIT_COMMIT} && docker push gangoll/dev-${env.GIT_COMMIT}"}
+                        sh "docker tag dev-${env.GIT_COMMIT} gangoll/dev-${env.GIT_COMMIT} && docker push gangoll/dev-${env.GIT_COMMIT}"}
                        
                         if (BRANCH_NAME =~ /^(staging)/){
                         sh "docker tag staging-${env.GIT_COMMIT} gangoll/staging-${env.GIT_COMMIT} && docker push gangoll/staging-${env.GIT_COMMIT}"}
