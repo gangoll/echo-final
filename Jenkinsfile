@@ -38,15 +38,15 @@ pipeline {
                 script{
                         if (BRANCH_NAME =~ /^(dev)/){
                         dir('dev'){    
-                            sh "docker build -t dev-${GIT_COMMIT_HASH} ." 
+                            sh "docker build -t dev-${env.GIT_COMMIT} ." 
                         }}
                         if (BRANCH_NAME =~ /^(master)/){
                         dir('master'){    
-                            sh "docker build -t 1.0.${env.JENKINS_BUILD_NUMBER}  ." 
+                            sh "docker build -t 1.0.${env.BUILD_NUMBER} ." 
                         }}
                         if (BRANCH_NAME =~ /^(staging)/){
                         dir('staging'){    
-                            sh "docker build -t 'staging-${GIT_COMMIT_HASH}'  ." 
+                            sh "docker build -t 'staging-${env.GIT_COMMIT_HASH}'  ." 
                         }}
             
 
