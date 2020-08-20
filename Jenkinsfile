@@ -38,15 +38,15 @@ pipeline {
                 script{
                         if (BRANCH_NAME =~ /^(dev)/){
                         dir('dev'){    
-                            sh "docker build -t dev-${GIT_COMMIT_HASH} ." 
+                            sh "docker build -t dev-${env.GIT_COMMIT} ." 
                         }}
                         if (BRANCH_NAME =~ /^(master)/){
                         dir('master'){    
-                            sh "docker build -t 1.0.${env.JENKINS_BUILD_NUMBER}  ." 
+                            sh "docker build -t 1.0.${env.BUILD_NUMBER} ." 
                         }}
                         if (BRANCH_NAME =~ /^(staging)/){
                         dir('staging'){    
-                            sh "docker build -t 'staging-${GIT_COMMIT_HASH}'  ." 
+                            sh "docker build -t 'staging-${env.GIT_COMMIT}'  ." 
                         }}
             
 
@@ -62,14 +62,14 @@ pipeline {
                     script{             //if script returns 1 the job will fail!!
                          docker.withRegistry( '', registryCredential ){
                       if (BRANCH_NAME =~ /^(master)/){
-                           sh "docker tag 1.0.${env.JENKINS_BUILD_NUMBER} gangoll/1.0.${env.JENKINS_BUILD_NUMBER} && docker push gangoll/1.0.${env.JENKINS_BUILD_NUMBER}"
+                           sh "docker tag 1.0.${env.BUILD_NUMBER} gangoll/1.0.${env._BUILD_NUMBER} && docker push gangoll/1.0.${env.BUILD_NUMBER}"
                       }
                        if (BRANCH_NAME =~ /^(dev)/){
                         docker.withRegistry( '', registryCredential ){
-                        sh "docker tag dev-${GIT_COMMIT_HASH} gangoll/dev-${GIT_COMMIT_HASH} && docker push gangoll/dev-${GIT_COMMIT_HASH}"}
+                        sh "docker tag dev-${env.GIT_COMMIT.} gangoll/dev-${env.GIT_COMMIT} && docker push gangoll/dev-${env.GIT_COMMIT}"}
                        
                         if (BRANCH_NAME =~ /^(staging)/){
-                        sh "docker tag staging-${GIT_COMMIT_HASH} gangoll/staging-${GIT_COMMIT_HASH} && docker push gangoll/staging-${GIT_COMMIT_HASH}"}
+                        sh "docker tag staging-${env.GIT_COMMIT} gangoll/staging-${env.GIT_COMMIT} && docker push gangoll/staging-${env.GIT_COMMIT}"}
                         
                      }
                  
