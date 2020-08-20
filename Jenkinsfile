@@ -46,7 +46,7 @@ pipeline {
                         }}
                         if (BRANCH_NAME =~ /^(staging)/){
                         dir('staging'){    
-                            sh "docker build -t 'staging-${env.GIT_COMMIT_HASH}'  ." 
+                            sh "docker build -t 'staging-${env.GIT_COMMIT}'  ." 
                         }}
             
 
