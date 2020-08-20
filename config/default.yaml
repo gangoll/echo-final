@@ -1,6 +1,6 @@
 port: 3000
 loglevel: info
 persist: true
-mongodburl: mongodb://myusername:mypassword@mongo-mongodb-replicaset-0.mongo-mongodb-replicaset,mongo-mongodb-replicaset-1.mongo-mongodb-replicaset,mongo-mongodb-replicaset-2.mongo1-mongodb-replicaset:27017/echo?authSource=admin
+mongodburl: mongodb://myusername:mypassword@mongo-mongodb-replicaset-0.mongo-mongodb-replicaset,mongo-mongodb-replicaset-1.mongo-mongodb-replicaset,mongo-mongodb-replicaset-2.mongo-mongodb-replicaset:27017/echo?authSource=admin
 dbname: echo
 
